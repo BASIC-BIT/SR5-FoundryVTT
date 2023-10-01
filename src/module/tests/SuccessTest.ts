@@ -610,6 +610,9 @@ export class SuccessTest {
 
         this.data.manualHits.value = Helpers.calcTotal(this.data.manualHits, {min: 0});
         this.data.manualGlitches.value = Helpers.calcTotal(this.data.manualGlitches, {min: 0});
+
+        // Needed to show AP on incoming attacks
+        this.data.damage.ap.value = Helpers.calcTotal(this.data.damage.ap);
         
         console.debug(`Shadowrun 5e | Calculated base values for ${this.constructor.name}`, this.data);
     }
