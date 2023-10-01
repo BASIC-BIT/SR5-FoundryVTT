@@ -1,36 +1,48 @@
 import { ImportHelper } from '../../helper/ImportHelper';
 import { WeaponParserBase } from './WeaponParserBase';
-import ActorAttribute = Shadowrun.ActorAttribute;
 import DamageData = Shadowrun.DamageData;
 import DamageType = Shadowrun.DamageType;
 import {DataDefaults} from "../../../data/DataDefaults";
 import WeaponItemData = Shadowrun.WeaponItemData;
+import DamageElement = Shadowrun.DamageElement;
+import PhysicalAttribute = Shadowrun.PhysicalAttribute;
 
 export class MeleeParser extends WeaponParserBase {
     GetDamage(jsonData: object): DamageData {
-        let jsonDamage = ImportHelper.StringValue(jsonData, 'damage');
-        let damageCode: any = jsonDamage.match(/(STR)([+-]?)([1-9]*)\)([PS])/g)?.[0];
+        const jsonDamage = ImportHelper.StringValue(jsonData, 'damage');
+        // ex. 15S(e)
+        const simpleDamage = /^([0-9]+)([PS])? ?(\([a-zA-Z]+\))?/g.exec(jsonDamage);
+        // ex. ({STR}+1)P(fire)
+        const strengthDamage = /^\({STR}([+-]?[0-9]*)\)([PS])? ?(\([a-zA-Z]+\))?/g.exec(jsonDamage);
 
-        if (damageCode == null) {
-            return DataDefaults.damageData();
+        console.log(`Parsing damage from: ${jsonDamage}`)
+        let damageType: DamageType = '';
+        let damageAttribute: PhysicalAttribute | '' = '';
+        let damageBase: number = 0;
+        let damageElement: DamageElement = '';
+
+        if(simpleDamage !== null) {
+            damageAttribute = '';
+            damageBase = parseInt(simpleDamage[1], 10);
+            damageType = this.parseDamageType(simpleDamage[2]);
+            damageElement = this.parseDamageElement(simpleDamage[3])
+            console.log(`Found simple damage ${damageBase} ${damageType} ${damageElement}`)
+            console.log(simpleDamage)
+        } else if (strengthDamage !== null) {
+            damageAttribute = 'strength';
+            damageBase = parseInt(strengthDamage[1], 10) || 0;
+            damageType = this.parseDamageType(strengthDamage[2]);
+            damageElement = this.parseDamageElement(strengthDamage[3]);
+            console.log(`Found strength damage ${damageBase} ${damageType} ${damageElement}`)
+            console.log(strengthDamage)
         }
 
-        let damageBase = 0;
-        let damageAp = ImportHelper.IntValue(jsonData, 'ap', 0);
+        const damageAp = ImportHelper.IntValue(jsonData, 'ap', 0);
 
-        let splitDamageCode = damageCode.split(')');
-        let damageType = splitDamageCode[1].includes('P') ? 'physical' : 'stun';
-
-        let splitBaseCode = damageCode.includes('+') ? splitDamageCode[0].split('+') : splitDamageCode[0].split('-');
-        if (splitDamageCode[0].includes('+') || splitDamageCode[0].includes('-')) {
-            damageBase = parseInt(splitBaseCode[1], 0);
-        }
-        let damageAttribute = damageCode.includes('STR') ? 'strength' : '';
-
-        const partialDamageData = {
+        const partialDamageData: RecursivePartial<DamageData> = {
             type: {
-                base: damageType as DamageType,
-                value: damageType as DamageType,
+                base: damageType,
+                value: damageType,
             },
             base: damageBase,
             value: damageBase,
@@ -39,9 +51,37 @@ export class MeleeParser extends WeaponParserBase {
                 value: damageAp,
                 mod: [],
             },
-            attribute: damageAttribute as ActorAttribute,
+            attribute: damageAttribute,
+            element: {
+                base: damageElement,
+                value: damageElement,
+            }
         }
         return DataDefaults.damageData(partialDamageData);
+    }
+
+    private parseDamageType(parsedType: string | undefined): DamageType {
+        switch(parsedType) {
+            case 'S':
+                return 'stun';
+            case 'M':
+                return 'matrix';
+            case 'P':
+                return 'physical';
+            default:
+                return '';
+        }
+    }
+
+    private parseDamageElement(parsedElement: string | undefined): DamageElement {
+        switch(parsedElement?.toLowerCase()) {
+            case '(e)':
+                return 'electricity';
+            case '(fire)':
+                return 'fire';
+            default:
+                return '';
+        }
     }
 
     override Parse(jsonData: object, item: WeaponItemData, jsonTranslation?: object): WeaponItemData {
