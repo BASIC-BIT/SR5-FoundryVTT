@@ -15,7 +15,6 @@ export class MeleeParser extends WeaponParserBase {
         // ex. ({STR}+1)P(fire)
         const strengthDamage = /^\({STR}([+-]?[0-9]*)\)([PS])? ?(\([a-zA-Z]+\))?/g.exec(jsonDamage);
 
-        console.log(`Parsing damage from: ${jsonDamage}`)
         let damageType: DamageType = '';
         let damageAttribute: PhysicalAttribute | '' = '';
         let damageBase: number = 0;
@@ -26,15 +25,11 @@ export class MeleeParser extends WeaponParserBase {
             damageBase = parseInt(simpleDamage[1], 10);
             damageType = this.parseDamageType(simpleDamage[2]);
             damageElement = this.parseDamageElement(simpleDamage[3])
-            console.log(`Found simple damage ${damageBase} ${damageType} ${damageElement}`)
-            console.log(simpleDamage)
         } else if (strengthDamage !== null) {
             damageAttribute = 'strength';
             damageBase = parseInt(strengthDamage[1], 10) || 0;
             damageType = this.parseDamageType(strengthDamage[2]);
             damageElement = this.parseDamageElement(strengthDamage[3]);
-            console.log(`Found strength damage ${damageBase} ${damageType} ${damageElement}`)
-            console.log(strengthDamage)
         }
 
         const damageAp = ImportHelper.IntValue(jsonData, 'ap', 0);

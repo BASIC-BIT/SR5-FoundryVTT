@@ -194,6 +194,11 @@ export class PhysicalDefenseTest extends DefenseTest {
 
         this.data.modifiedDamage = CombatRules.modifyDamageAfterHit(this.actor, this.against.hits.value, this.hits.value, this.data.incomingDamage);
 
+        // Hacky solution to show why damage was modified to 0
+        if(this.actor && this.actor.isVehicle() && this.data.modifiedDamage.value === 0) {
+            this.failureLabelText = "SR5.AttackBlockedByVehicleArmor"
+        }
+
         await super.processFailure();
     }
 

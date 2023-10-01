@@ -1,9 +1,7 @@
-import { SR5Item } from './../item/SR5Item';
 import {SR} from "../constants";
 import {PartsList} from "../parts/PartsList";
 import {Helpers} from "../helpers";
 import DamageData = Shadowrun.DamageData;
-import ArmorData = Shadowrun.ArmorData;
 import ValueField = Shadowrun.ValueField;
 import {SoakRules} from "./SoakRules";
 import {SR5Actor} from "../actor/SR5Actor";
@@ -120,6 +118,11 @@ export class CombatRules {
         // SR5#173 Step 3: Defend B.
         modified = CombatRules.modifyDamageTypeAfterHit(modified, defender);
 
+        // Apply Vehicle Armor rules
+        if(defender.isVehicle()) {
+            modified = CombatRules.modifyDamageToVehicleArmor(modified, defender);
+        }
+
         return modified;
     }
 
@@ -132,6 +135,31 @@ export class CombatRules {
      */
     static modifyDamageAfterSupressionHit(damage: DamageData): DamageData {
         return foundry.utils.duplicate(damage);
+    }
+
+    /**
+     * Assess if vehicle armor completely blocks attack.
+     * If the Modified DV is less than the modified AV (after AP but before soak), then the attack does 0 damage.
+     *
+     * @param actor The actor receiving the damage
+     * @param damage The incoming weapon damage of the attack, unaltered.
+     */
+    static modifyDamageToVehicleArmor(damage: DamageData, actor: SR5Actor): DamageData {
+        let modified = foundry.utils.duplicate(damage);
+
+        const modifiedAv = actor.getArmor(modified).value;
+        const modifiedDv = modified.value;
+
+        console.log(`Checking vehicle armor - Modified AV: ${modifiedAv}, Modified DV: ${modifiedDv}`);
+
+        if(modifiedDv < modifiedAv) {
+            modified = CombatRules.modifyDamageAfterMiss(modified);
+            modified.element.value = '';
+            modified.type.value = '';
+            modified.ap.value = 0;
+        }
+
+        return modified;
     }
 
     /**

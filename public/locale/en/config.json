@@ -115,6 +115,7 @@
     "SR5.ArmorValue": "Armor Value",
     "SR5.AttackDodged": "Attack Dodged",
     "SR5.AttackHits": "Attack Hits",
+    "SR5.AttackBlockedByVehicleArmor": "Attack Blocked By Vehicle Armor",
     "SR5.Attacker": "Attacker",
     "SR5.AttackerHits": "Attacker Hits",
     "SR5.AttackerNetHits": "Attacker Net Hits",

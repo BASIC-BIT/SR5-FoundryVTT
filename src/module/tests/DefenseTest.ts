@@ -24,6 +24,8 @@ export interface DefenseTestData extends OpposedTestData {
 export class DefenseTest extends OpposedTest {
     override data: DefenseTestData
 
+    protected failureLabelText: string = 'SR5.AttackHits';
+
     override _prepareData(data, options?) {
         data = super._prepareData(data, options);
 
@@ -44,7 +46,7 @@ export class DefenseTest extends OpposedTest {
     }
 
     override get failureLabel() {
-        return 'SR5.AttackHits';
+        return this.failureLabelText;
     }
 
     /**
