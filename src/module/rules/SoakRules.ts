@@ -43,7 +43,7 @@ export class SoakRules {
 
         if (damage.type.value === 'physical') {
             // Physical damage is only transformed for some actors
-            if (!actor.isCharacter() && !actor.isSpirit() && !actor.isCritter() && !actor.isVehicle()) {
+            if (!actor.isCharacter() && !actor.isSpirit() && !actor.isCritter()) {
                 return updatedDamage;
             }
 

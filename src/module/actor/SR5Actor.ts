@@ -430,6 +430,7 @@ export class SR5Actor extends Actor {
      * Amount of recoil compensation this actor has available (without the weapon used).
      */
     get recoilCompensation(): number {
+        // TODO: Check if vehicles are getting 1 + Body or just body
         if(!this.system.values.hasOwnProperty('recoil_compensation')) return 0;
         //@ts-ignore
         return this.system.values.recoil_compensation.value;
