@@ -124,14 +124,27 @@ export class CombatRules {
     }
 
     /**
-     * Modify damage according to suppression defense (SR5#179). Successfull attack.
+     * Modify damage according to suppression defense (SR5#179). Successful attack.
      * 
-     * In case of suppression a successfull attack just does weapon damage (base + ammunition)
+     * In case of suppression a successful attack just does weapon damage (base + ammunition)
      * 
      * @param damage The incoming weapon damage of the attack, unaltered.
      */
     static modifyDamageAfterSupressionHit(damage: DamageData): DamageData {
         return foundry.utils.duplicate(damage);
+    }
+
+    /**
+     * Modify damage for vehicle armor, to completely block damage if the modified DV (base DV + net hits) is less than the modified AV (Base Armor - AP)
+     *
+     * @param damage The incoming weapon damage of the attack, unaltered.
+     */
+    static modifyDamageForVehicleArmor(damage: DamageData, actor : SR5Actor): DamageData {
+        if(!actor.isVehicle()) return damage;
+
+        const modifiedAv = actor.getArmor(damage);
+
+        const modifiedDv = damage.value
     }
 
     /**
