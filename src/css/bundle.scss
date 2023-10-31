@@ -441,7 +441,7 @@ input[type='text'].display {
         @include sheet;
         overflow: hidden;
         border: 1px solid $dark2;
-        border-top: 0px;
+        border-top: 0;
     }
 
     .description>.editor {
@@ -647,6 +647,7 @@ input[type='text'].display {
         .header {
             width: 60px;
             margin-right: 8px;
+            color: $yellow;
         }
 
         .cell-container {
@@ -991,10 +992,6 @@ input[type='text'].display {
         @include systemFonts;
         font-size: var(--font-size-18);
         font-weight: bold;
-    }
-
-    .cell-input-roll {
-        color: $yellow;
     }
 }
 
