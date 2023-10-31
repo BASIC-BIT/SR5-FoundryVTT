@@ -19,6 +19,7 @@
                                 tolerance=../woundTolerance                       
                                 toleranceBase=track.pain_tolerance
                                 disabled=track.disabled
+                                rollHeader="true"
                         }}
                         {{#if track.overflow}}
                             {{#ife track.value track.max}}
@@ -46,6 +47,7 @@
                             value=system.attributes.edge.uses
                             max=system.attributes.edge.value
                             id="edge"
+                            rollHeader="true"
                     }}
                 </div>
             </div>
