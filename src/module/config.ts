@@ -678,6 +678,17 @@ export const SR5 = {
             track: "SR5.IC.Types.Track"
         }
     },
+    host: {
+        types: {
+            data: "SR5.Host.Types.Data",
+            industry: "SR5.Host.Types.Industry",
+            destination: "SR5.Host.Types.Destination",
+            outdated: "SR5.Host.Types.Outdated",
+            offline: "SR5.Host.Types.Offline",
+            rogue: "SR5.Host.Types.Rogue",
+            custom: "SR5.Host.Types.Custom",
+        }
+    },
 
     character: {
         types: {

@@ -35,7 +35,7 @@
         "ApplyLimitsDescription": "Should Limits be applied to rolls",
         "ApplyLimitsName": "Apply Limits to Rolls",
         "AutomateMultiDefenseModifier": "Automate defense modifier",
-        "AutomateMultiDefenseModifierDescription": "Will automatically apply defense mod for mulitple attacks",
+        "AutomateMultiDefenseModifierDescription": "Will automatically apply defense mod for multiple attacks",
         "AutomateProgressiveRecoil": "Automate progressive recoil",
         "AutomateProgressiveRecoilDescription": "Characters accrue progressive recoil until reset",
         "DiagonalMovementDescription": "How should diagonal movement be handled when using a grid",
@@ -49,7 +49,7 @@
         "IgnoreDiagonal": "Ignore Diagonal Movement (1-1-1)",
         "ManualRollOnSuccessTest": "Manual dice roll on any test",
         "ManualRollOnSuccessTestDescription": "Allow user to manually roll dice on tests and report back hits",
-        "MustHaveRessourcesOnTest": "Stop Tests with missing ressouces",
+        "MustHaveRessourcesOnTest": "Stop Tests with missing resources",
         "MustHaveRessourcesOnTestDescription": "Only allow actors with all necessary resources to roll a test",
         "OnlyAllowRollOnDefaultableSkills": "Only defaultable unknown skill rolls",
         "OnlyAllowRollOnDefaultableSkillsDescription": "When unset unknown skills can be rolled, even if they can't be defaulted.",
@@ -437,7 +437,16 @@
         "DropICActor": "Drag&Drop an IC actor in order of security response",
         "ICOrder": "IC Order",
         "MissingIC": "Missing IC",
-        "Rating": "Host Rating"
+        "Rating": "Host Rating",
+        "Types": {
+            "Data": "Data",
+            "Destination": "Destination",
+            "Industry": "Industry",
+            "Outdated": "Outdated",
+            "Offline": "Offline",
+            "Rogue": "Rogue",
+            "Custom": "Custom"
+        }
     },
     "SR5.HotSim": "Hot Sim",
     "SR5.IC": {

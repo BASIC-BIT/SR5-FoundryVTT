@@ -18,7 +18,7 @@ export class HostPrep {
      * @param system
      */
     static prepareMatrixAttributes(system: HostData) {
-        const hostAttributeRatings = MatrixRules.hostMatrixAttributeRatings(system.rating);
+        const hostAttributeRatings = MatrixRules.hostMatrixAttributeRatings(system.rating, system.type);
         Object.values(system.atts).forEach(attribute => {
             attribute.value = hostAttributeRatings.pop();
             // Disallow editing on the item sheet, since the value is derived.
