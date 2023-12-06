@@ -576,6 +576,11 @@ export const SR5 = {
         matrix: 'SR5.InitCatMatrix',
     },
 
+    fullDefenseSkills: {
+        gymnastics: 'SR5.SkillGymnastics',
+        perception: 'SR5.SkillPerception',
+    },
+
     // Gear modification types. :) Not modifiers.
     modificationTypes: {
         weapon: 'SR5.Weapon.Weapon',

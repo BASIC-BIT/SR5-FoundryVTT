@@ -70,7 +70,7 @@ export class PhysicalDefenseTest extends DefenseTest {
         this.data.activeDefenses = {
             full_defense: {
                 label: 'SR5.FullDefense',
-                value: actor.getFullDefenseAttribute()?.value,
+                value: actor.getFullDefenseValue()?.value,
                 initMod: -10,
             },
             dodge: {

@@ -399,7 +399,7 @@ export class SR5Actor extends Actor {
         if (matrix.device) return this.items.get(matrix.device);
     }
 
-    getFullDefenseAttribute(): Shadowrun.AttributeField | undefined {
+    getFullDefenseValue(): Shadowrun.BaseValuePair<number> | undefined {
         if (this.isVehicle()) {
             return this.findVehicleStat('pilot');
         } else if (this.isCharacter()) {
@@ -407,7 +407,8 @@ export class SR5Actor extends Actor {
             if (character) {
                 let att = character.system.full_defense_attribute;
                 if (!att) att = 'willpower';
-                return this.findAttribute(att);
+                // Fall back to skills if attribute not found, for Acrobatic Defender and Perceptive Defender
+                return this.findAttribute(att) ?? this.findActiveSkill(att);
             }
         }
     }
