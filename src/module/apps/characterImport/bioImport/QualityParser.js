@@ -1,5 +1,6 @@
 import { parseDescription, getArray, createItemData, formatAsSlug, genImportFlags, setSubType } from "../importHelper/BaseParserFunctions.js"
 import * as IconAssign from '../../iconAssigner/iconAssign.js';
+import { SR5 } from "../../../config";
 
 export class QualityParser {
 
@@ -37,6 +38,11 @@ export class QualityParser {
 
         // Create the item
         let quality = createItemData(chummerQuality.name, parserType, system);
+
+        // Set full defense attribute/skill based on quality
+        if(Object.keys(SR5.fullDefenseQualities).includes(chummerQuality.name)) {
+            system.full_defense_attribute = SR5.fullDefenseQualities[chummerQuality.name];
+        }
 
         return quality;
     }

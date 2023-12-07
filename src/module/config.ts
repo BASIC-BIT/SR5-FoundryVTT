@@ -1302,5 +1302,11 @@ export const SR5 = {
             'unarmed': '',
             'underbarrel-weapons': 'systems/shadowrun5e/dist/icons/importer/modification/modification.svg'
         }
-    }
+    },
+    fullDefenseQualities: {
+        'Agile Defender': 'agility',
+        'Too Pretty To Hit': 'charisma',
+        'Perceptive Defender': 'perception',
+        'Acrobatic Defender': 'gymnastics',
+    },
 } as const;
