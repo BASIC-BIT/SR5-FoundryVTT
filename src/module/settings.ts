@@ -2,6 +2,7 @@
 
 import { VersionMigration } from './migrator/VersionMigration';
 import { FLAGS, SYSTEM_NAME } from './constants';
+import { FullDefenseMenu } from './menus/FullDefenseMenu';
 
 export const registerSystemSettings = () => {
 
@@ -195,5 +196,32 @@ export const registerSystemSettings = () => {
             'ICON': 'SETTINGS.FreshIcon',
             'NONE': 'SETTINGS.NoMarking'
         }
+    });
+
+    game.settings.register(SYSTEM_NAME, FLAGS.FullDefenseAttributes, {
+        name: 'SETTINGS.FullDefenseAttributes',
+        hint: 'SETTINGS.FullDefenseAttributesDescription',
+        scope: 'world',
+        config: false,
+        type: Array<String>,
+        // Willpower is used by default, but qualities allow for Charisma and Agility.
+        // Pilot or Intuition may be used for Evasive Driving, the vehicle equivalent to Full Defense (this should probably be handled separately)
+        default: ['willpower', 'agility', 'charisma', 'pilot', 'intuition'],
+    });
+
+    game.settings.register(SYSTEM_NAME, FLAGS.FullDefenseSkills, {
+        name: 'SETTINGS.FullDefenseSkills',
+        hint: 'SETTINGS.FullDefenseSkillsDescription',
+        scope: 'world',
+        config: false,
+        type: Array<String>,
+        default: ['gymnastics', 'perception'],
+    });
+
+    game.settings.registerMenu(SYSTEM_NAME, FLAGS.FullDefenseMenu, {
+        name: 'SETTINGS.FullDefenseMenu',
+        label: 'SETTINGS.FullDefenseMenu',
+        type: FullDefenseMenu,
+        restricted: true,
     });
 };

@@ -1,0 +1,9 @@
+#full-defense-menu {
+  .form-fields {
+    flex-wrap: wrap;
+    justify-content: left;
+    .item {
+      flex: 0 0 12%;
+    }
+  }
+}

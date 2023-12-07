@@ -14,6 +14,8 @@ declare namespace Shadowrun {
         canAlterSpecial: boolean
         hasFullDefense: boolean
         effects: EffectsSheetData
+        fullDefenseAttributeOptions: Array<string>
+        fullDefenseSkillOptions: Array<string>
     }
 
     interface EffectsSheetData {

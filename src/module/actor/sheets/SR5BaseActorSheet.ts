@@ -18,6 +18,7 @@ import MatrixAttribute = Shadowrun.MatrixAttribute;
 import DeviceData = Shadowrun.DeviceData;
 import KnowledgeSkills = Shadowrun.KnowledgeSkills;
 import { LinksHelpers } from '../../utils/links';
+import { FLAGS, SYSTEM_NAME } from '../../constants';
 
 
 /**
@@ -235,6 +236,7 @@ export class SR5BaseActorSheet extends ActorSheet {
         this._prepareActorTypeFields(data);
         this._prepareSpecialFields(data);
         this._prepareSkillsWithFilters(data);
+        this._prepareFullDefenseOptions(data);
 
         data.itemType = this._prepareItemTypes(data);
         data.effects = prepareActiveEffectCategories(this.actor.effects);  // All actor types have effects.
@@ -1047,6 +1049,11 @@ export class SR5BaseActorSheet extends ActorSheet {
         sheetData.hasSkills = this.actor.hasSkills;
         sheetData.canAlterSpecial = this.actor.canAlterSpecial;
         sheetData.hasFullDefense = this.actor.hasFullDefense;
+    }
+
+    _prepareFullDefenseOptions(sheetData: SR5ActorSheetData) {
+        sheetData.fullDefenseAttributeOptions = game.settings.get(SYSTEM_NAME, FLAGS.FullDefenseAttributes) as Array<string>;
+        sheetData.fullDefenseSkillOptions = game.settings.get(SYSTEM_NAME, FLAGS.FullDefenseSkills) as Array<string>;
     }
 
     async _onMarksQuantityChange(event) {

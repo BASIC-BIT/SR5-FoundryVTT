@@ -47,8 +47,11 @@ export const FLAGS = {
     AutomateProgressiveRecoil: 'AutomateProgressiveRecoil',
     TurnsSinceLastAttack: 'turnsSinceLastAttack',
     ManualRollOnSuccessTest: 'ManualRollOnSuccessTest',
-    MarkImports: 'MarkImports'
-};
+    MarkImports: 'MarkImports',
+    FullDefenseAttributes: 'FullDefenseAttributes',
+    FullDefenseSkills: 'FullDefenseSkills',
+    FullDefenseMenu: 'FullDefenseMenu',
+} as const;
 export const CORE_NAME = 'core';
 export const CORE_FLAGS = {
     RollMode: 'rollMode'

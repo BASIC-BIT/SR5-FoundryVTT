@@ -69,7 +69,12 @@
         "ShowTokenNameForChatOutputDescription": "Should the token name be used for roll card output instead of the actor name when available",
         "ShowTokenNameForChatOutputName": "Use Token Name for Roll Card",
         "TokenHealthBars": "Token health bars",
-        "TokenHealthBarsDescription": "A full damage track will show as an empty health bar on a Token instead of mirroring"
+        "TokenHealthBarsDescription": "A full damage track will show as an empty health bar on a Token instead of mirroring",
+        "FullDefenseAttributes": "Full Defense Attributes",
+        "FullDefenseAttributesDescription": "Which attributes are selectable to be used for Full Defense",
+        "FullDefenseSkills": "Full Defense Skills",
+        "FullDefenseSkillsDescription": "Which skills are selectable to be used for Full Defense",
+        "FullDefenseMenu": "Full Defense Options"
     },
     "SR5.AP": "AP",
     "SR5.Accessory": "Accessory",
@@ -1382,5 +1387,6 @@
     "SR5.WeaponReach": "Reach",
     "SR5.WeaponReload": "Reload",
     "SR5.WeaponType": "Type",
-    "SR5.Wireless": "Wireless"
+    "SR5.Wireless": "Wireless",
+    "SR5.SaveChanges": "Save Changes"
 }
