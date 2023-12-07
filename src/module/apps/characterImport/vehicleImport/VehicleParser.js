@@ -18,7 +18,7 @@ export default class VehicleParser {
 
         const vehicles = getArray(chummerChar.vehicles?.vehicle);
 
-        vehicles.forEach(async vehicle => {
+        await Promise.all(vehicles.map(async vehicle => {
             let vehicleActor = await Actor.create({
                 name: vehicle.name,
                 type: "vehicle"
@@ -66,6 +66,6 @@ export default class VehicleParser {
             });
 
             await vehicleActor.createEmbeddedDocuments('Item', (await Promise.all(promises)).flat());
-        })
+        }));
     }
 }

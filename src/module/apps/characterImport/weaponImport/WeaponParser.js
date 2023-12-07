@@ -47,7 +47,7 @@ export class WeaponParser {
     async parseWeaponArray(weapons, assignIcons) {
         const parsedWeapons = [];
         const iconList = await IconAssign.getIconFiles();
-        weapons.forEach(async (chummerWeapon) => {
+        await Promise.all(weapons.map(async (chummerWeapon) => {
             try {
                 const itemData = this.parseWeapon(chummerWeapon);
 
@@ -58,7 +58,7 @@ export class WeaponParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedWeapons;
     }

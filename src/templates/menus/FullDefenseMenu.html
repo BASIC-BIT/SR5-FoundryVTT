@@ -5,18 +5,19 @@
     <div class="form-fields">
       {{#each attribute as |checked attribute|}}
       <div class="item">
-      <input type="checkbox" id="attribute.{{attribute}}" name="attribute.{{attribute}}" {{#if checked}}checked{{/if}}>{{localize (objValue ../config.attributes attribute)}}</input>
+      <input type="checkbox" id="attribute.{{attribute}}" name="attribute.{{attribute}}" {{#if checked}}checked{{/if}} /><span>{{localize (objValue ../config.attributes attribute)}}</span>
       </div>
       {{/each}}
     </div>
   </div>
+  <hr />
   <div class="form-group">
     <label>{{localize "SETTINGS.FullDefenseSkills"}}</label>
     <p class="notes">{{localize "SETTINGS.FullDefenseSkillsDescription"}}</p>
     <div class="form-fields">
       {{#each skill as |checked skill|}}
       <div class="item">
-      <input type="checkbox" id="skill.{{skill}}" name="skill.{{skill}}" {{#if checked}}checked{{/if}}>{{localize (objValue ../config.activeSkills skill)}}</input>
+      <input type="checkbox" id="skill.{{skill}}" name="skill.{{skill}}" {{#if checked}}checked{{/if}} /><span>{{localize (objValue ../config.activeSkills skill)}}</span>
       </div>
       {{/each}}
     </div>

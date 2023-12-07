@@ -22,12 +22,12 @@ export class ItemsParser {
      * @param {*} chummerChar The chummer char holding the items
      * @param {*} importOptions Additional import option that specify what items will be imported.
      */
-    async parse(chummerChar, importOptions) {
+    async parse(chummerChar, importOptions, actor) {
         const promises = [];
         Object.freeze(chummerChar)
 
         if (importOptions.qualities && chummerChar.qualities?.quality) {
-            promises.push(new QualityParser().parseQualities(chummerChar, importOptions.assignIcons));
+            promises.push(new QualityParser().parseQualities(chummerChar, importOptions.assignIcons, actor));
         }
 
         if (importOptions.weapons && chummerChar.weapons?.weapon) {

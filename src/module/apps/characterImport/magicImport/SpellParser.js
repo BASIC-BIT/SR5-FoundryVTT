@@ -8,7 +8,7 @@ export class SpellParser {
         const parsedSpells = [];
         const iconList = await IconAssign.getIconFiles();
 
-        spells.forEach(async (chummerSpell) => {
+        await Promise.all(spells.map(async (chummerSpell) => {
             try {
                 if (chummerSpell.alchemy.toLowerCase() !== 'true') {
                     const itemData = this.parseSpell(chummerSpell);
@@ -21,7 +21,7 @@ export class SpellParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedSpells;
     }

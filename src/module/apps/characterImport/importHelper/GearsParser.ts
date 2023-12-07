@@ -14,7 +14,7 @@ export class GearsParser {
         let items : any[] = [];
         const iconList = await IconAssign.getIconFiles();
 
-        chummerGears.forEach(async (chummerGear) => {
+        await Promise.all(chummerGears.map(async (chummerGear) => {
             try {
                 // First filter out gear entries, that we do not want to handle.
                 if (!this.gearShouldBeParsed(chummerGear)) {
@@ -32,7 +32,7 @@ export class GearsParser {
             catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return items;
     }

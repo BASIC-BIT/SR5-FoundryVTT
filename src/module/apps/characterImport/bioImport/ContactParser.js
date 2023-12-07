@@ -9,10 +9,9 @@ export class ContactParser {
         const parsedContacts = [];
         const iconList = await IconAssign.getIconFiles();
 
-        chummerContacts.forEach(async (chummerContact) => {
+        await Promise.all(chummerContacts.map(async (chummerContact) => {
             try {
                 const itemData = this.parseContact(chummerContact);
-
                 // Assign the icon if enabled
                 if (assignIcons) {itemData.img = await IconAssign.iconAssign(itemData.system.importFlags, itemData.system, iconList)};
 
@@ -20,7 +19,7 @@ export class ContactParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedContacts;
     }

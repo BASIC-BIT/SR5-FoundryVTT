@@ -31,7 +31,7 @@ export class CharacterImporter {
         const chummerCharacter = chummerFile.characters.character;
         const characterInfoUpdater = new CharacterInfoUpdater();
         const updatedActorData = characterInfoUpdater.update(actor._source, chummerCharacter);
-        const items = new ItemsParser().parse(chummerCharacter, importOptions);
+        const items = new ItemsParser().parse(chummerCharacter, importOptions, actor);
 
         new VehicleParser().parseVehicles(actor, chummerCharacter, importOptions)
 

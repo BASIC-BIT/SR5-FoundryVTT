@@ -8,7 +8,7 @@ export class WareParser {
         const parsedWare = [];
         const iconList = await IconAssign.getIconFiles();
 
-        await chummerWares.forEach( async (chummerWare) => {
+        await Promise.all(chummerWares.map( async (chummerWare) => {
             try {
                 const itemData = this.parseWare(chummerWare);
 
@@ -19,7 +19,7 @@ export class WareParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedWare;
     }

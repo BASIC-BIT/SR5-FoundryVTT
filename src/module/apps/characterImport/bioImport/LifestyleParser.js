@@ -10,7 +10,7 @@ export class LifestyleParser {
         const parsedLifestyle = [];
         const iconList = await IconAssign.getIconFiles();
 
-        chummerLifestyle.forEach(async (chummerLifestyle) => {
+        await Promise.all(chummerLifestyle.map(async (chummerLifestyle) => {
             try {
                 const itemData = this.parseLifestyle(chummerLifestyle);
 
@@ -22,7 +22,7 @@ export class LifestyleParser {
              catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedLifestyle;
     }

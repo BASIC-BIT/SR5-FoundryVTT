@@ -1,9 +1,17 @@
 #full-defense-menu {
   .form-fields {
-    flex-wrap: wrap;
+    display: grid;
     justify-content: left;
+    grid-template-columns: repeat( auto-fit, 130px );
+    gap: 5px;
     .item {
-      flex: 0 0 12%;
+      //display: inline-block;
+      display: flex;
+      align-items: center;
+      margin: 0 auto 0 0;
+      span {
+        flex: 1 1 auto;
+      }
     }
   }
 }

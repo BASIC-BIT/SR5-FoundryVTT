@@ -6,7 +6,7 @@ export default class SimpleParser {
         const parsed = [];
         const iconList = await IconAssign.getIconFiles();
 
-        parsingCollection.forEach(async (toParse) => {
+        await Promise.all(parsingCollection.map(async (toParse) => {
             try {
                 const itemData = this.parseItem(toParse, parserType);
 
@@ -17,7 +17,7 @@ export default class SimpleParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsed;
     }

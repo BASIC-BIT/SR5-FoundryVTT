@@ -8,7 +8,9 @@ export class ArmorParser {
         const parsedArmors = [];
         const iconList = await IconAssign.getIconFiles();
 
-        armors.forEach(async (chummerArmor) => {
+        const promises = [];
+
+        promises.push(armors.map(async (chummerArmor) => {
             try {
                 const itemData = this.parseArmor(chummerArmor);
 
@@ -19,11 +21,11 @@ export class ArmorParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         const otherArmors = getArray(chummerChar.otherarmors?.otherarmor)
 
-        otherArmors.forEach(async (chummerArmor) => {
+        promises.push(otherArmors.map(async (chummerArmor) => {
             try {
                 const itemData = this.parseOtherArmor(chummerArmor);
 
@@ -34,7 +36,9 @@ export class ArmorParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
+
+        await Promise.all(promises);
 
         return parsedArmors;
     }

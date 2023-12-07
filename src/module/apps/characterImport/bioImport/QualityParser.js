@@ -4,12 +4,12 @@ import { SR5 } from "../../../config";
 
 export class QualityParser {
 
-    async parseQualities(chummerChar, assignIcons) {
+    async parseQualities(chummerChar, assignIcons, actor) {
         const qualities = getArray(chummerChar.qualities.quality);
         const parsedQualities = [];
         const iconList = await IconAssign.getIconFiles();
 
-        await qualities.forEach(async (chummerQuality) => {
+        await Promise.all(qualities.map(async (chummerQuality) => {
             try {
                 const itemData = this.parseQuality(chummerQuality);
 
@@ -17,10 +17,15 @@ export class QualityParser {
                 if (assignIcons) {itemData.img = await IconAssign.iconAssign(itemData.system.importFlags, itemData.system, iconList)};
 
                 parsedQualities.push(itemData);
+
+                // Set full defense attribute/skill based on quality
+                if(Object.keys(SR5.fullDefenseQualities).includes(itemData.name)) {
+                    await actor.update({ 'system.full_defense_attribute': SR5.fullDefenseQualities[itemData.name] });
+                }
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedQualities;
     }
@@ -37,12 +42,7 @@ export class QualityParser {
         setSubType(system, parserType, formatAsSlug(system.type)); // positive or negative
 
         // Create the item
-        let quality = createItemData(chummerQuality.name, parserType, system);
-
-        // Set full defense attribute/skill based on quality
-        if(Object.keys(SR5.fullDefenseQualities).includes(chummerQuality.name)) {
-            system.full_defense_attribute = SR5.fullDefenseQualities[chummerQuality.name];
-        }
+        const quality = createItemData(chummerQuality.name, parserType, system);
 
         return quality;
     }

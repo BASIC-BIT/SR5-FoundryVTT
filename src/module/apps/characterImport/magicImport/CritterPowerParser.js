@@ -8,7 +8,7 @@ export class CritterPowerParser {
         const parsedItems = [];
         const iconList = await IconAssign.getIconFiles();
 
-        powers.forEach(async (chummerPower) => {
+        await Promise.all(powers.map(async (chummerPower) => {
             try {
                 const itemData = this.parseCritterPower(chummerPower);
 
@@ -19,7 +19,7 @@ export class CritterPowerParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedItems;
     }

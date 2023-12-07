@@ -7,7 +7,7 @@ export class RitualParser {
         const parsedItems = [];
         const iconList = await IconAssign.getIconFiles();
 
-        items.forEach(async (item) => {
+        await Promise.all(items.map(async (item) => {
             try {
                 if (item.alchemy.toLowerCase() !== 'true') {
                     const itemData = this.parseRitual(item);
@@ -20,7 +20,7 @@ export class RitualParser {
             } catch (e) {
                 console.error(e);
             }
-        });
+        }));
 
         return parsedItems;
     }
