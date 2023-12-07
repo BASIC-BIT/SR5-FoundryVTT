@@ -126,9 +126,9 @@ export class ModifiersPrep {
     }
 
     /**
-     * Clear out modifierse from all calculate values, no matter where from and what.
+     * Clear out modifiers from all calculate values, no matter where from and what.
      * 
-     * This is necessary to avoid items and naive modifications doubling up shoudl they be
+     * This is necessary to avoid items and naive modifications doubling up should they be
      * saved with update calls
      * 
      */

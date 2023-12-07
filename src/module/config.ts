@@ -1309,4 +1309,5 @@ export const SR5 = {
         'Perceptive Defender': 'perception',
         'Acrobatic Defender': 'gymnastics',
     },
+    fullDefenseInitiativeCost: -10,
 } as const;

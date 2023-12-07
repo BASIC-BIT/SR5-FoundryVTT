@@ -17,8 +17,9 @@ export class ActionResultFlow {
          */
     static get _handlersResultAction(): Map<ResultActions, Function> {
         const handlers = new Map();
-        handlers.set('placeMarks', () => ui.notifications?.error('Placing marks currently isnt suported. Sorry!'));
-        handlers.set('modifyCombatantInit', ActionResultFlow._castInitModifierAction);
+        handlers.set('placeMarks', () => ui.notifications?.error('Placing marks currently isn\'t supported. Sorry!'));
+        handlers.set('modifyCombatantInit', (test) => ActionResultFlow._castInitModifierAction(test, false));
+        handlers.set('modifyCombatantInitWithFullDefense', (test) => ActionResultFlow._castInitModifierAction(test, true));
 
         return handlers;
     }
@@ -57,11 +58,17 @@ export class ActionResultFlow {
      * Modify the actors combatant according the test defined initiative modifier.
      * 
      * @param test The test instance causing the initiative modification
+     * @param wasFullDefense Was Full Defense part of this initiative modifier
      */
-    static async _castInitModifierAction(test: PhysicalDefenseTest) {
+    static async _castInitModifierAction(test: PhysicalDefenseTest, wasFullDefense: boolean) {
         if (!(test instanceof PhysicalDefenseTest)) return;
         
         if (!test.data.iniMod) return;
         await test.actor?.changeCombatInitiative(test.data.iniMod);
+        if(wasFullDefense) {
+            await test.actor?.update({
+                'data.values.isFullDefending': true,
+            });
+        }
     }
 }

@@ -946,7 +946,8 @@
                         "base": 0,
                         "value": 0,
                         "mod": []
-                    }
+                    },
+                    "isFullDefending": false
                 }
             },
             "grunt": {

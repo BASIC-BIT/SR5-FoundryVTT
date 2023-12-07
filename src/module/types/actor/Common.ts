@@ -95,10 +95,11 @@ declare namespace Shadowrun {
         recoil: ModifiableValue
         // The base amount of recoil compensation of an actor, without recoil reducing it.
         recoil_compensation: ModifiableValue
+        isFullDefending: boolean // TODO: This can't go here because of clearValueMods.  All PhysicalCombatValues need to be of the ModifiableValue type
     }
 
     export interface VisibilityChecks {
-        astral : AstralVisibility
+        astral: AstralVisibility
         meat: MeatSpaceVisibility
         matrix: MatrixVisibility
     }

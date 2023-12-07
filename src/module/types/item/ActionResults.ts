@@ -9,6 +9,7 @@ declare namespace Shadowrun {
      */
    export type ResultActions = 
       'modifyCombatantInit' |
+      'modifyCombatantInitWithFullDefense' |
       'placeMarks';
 
    /**

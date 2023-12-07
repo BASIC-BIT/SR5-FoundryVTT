@@ -190,6 +190,7 @@ export class SR5Combat extends Combat {
 
         // Defense modifiers reset on a new action phase.
         await combatant.actor?.removeDefenseMultiModifier();
+        await combatant.actor?.resetIsFullDefending();
 
         const turnsSinceLastAttackSetting = combatant.getFlag(SYSTEM_NAME, FLAGS.TurnsSinceLastAttack);
         if (foundry.utils.getType(turnsSinceLastAttackSetting) !== 'number') return await combatant.actor?.clearProgressiveRecoil();
@@ -482,6 +483,7 @@ export class SR5Combat extends Combat {
     override delete(...args): Promise<this | undefined> {
         // Remove all combat related modifiers.
         this.combatants.contents.forEach(combatant => combatant.actor?.removeDefenseMultiModifier());
+        this.combatants.contents.forEach(combatant => combatant.actor?.resetIsFullDefending());
         return super.delete(...args);
     }
 }

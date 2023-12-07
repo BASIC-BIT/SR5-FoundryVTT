@@ -426,7 +426,26 @@ export class SR5Actor extends Actor {
         return this.system.values.recoil_compensation.value;
     }
 
-    
+    get isFullDefending(): boolean {
+        if(!this.combatActive) {
+            return false;
+        }
+
+        const compatibleActor = this.asCritter() ?? this.asVehicle() ?? this.asCharacter() ?? this.asSpirit();
+
+        if(!compatibleActor) {
+            return false;
+        }
+
+        return compatibleActor.system.values.isFullDefending;
+    }
+
+    async resetIsFullDefending(): Promise<void> {
+        if(this.isFullDefending) {
+            await this.update({ 'system.values.isFullDefending': false });
+        }
+    }
+
     /**
      * Current recoil compensation with current recoil included.
      * 

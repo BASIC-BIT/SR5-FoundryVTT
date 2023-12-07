@@ -9,6 +9,7 @@ import MinimalActionData = Shadowrun.MinimalActionData;
 import ModifierTypes = Shadowrun.ModifierTypes;
 import { FLAGS, SYSTEM_NAME } from "../constants";
 import { Translation } from '../utils/strings';
+import { SR5 } from '../config';
 
 export interface PhysicalDefenseTestData extends DefenseTestData {
     // Dialog input for cover modifier
@@ -16,6 +17,11 @@ export interface PhysicalDefenseTestData extends DefenseTestData {
     // Dialog input for active defense modifier
     activeDefense: string
     activeDefenses: Record<string, { label: Translation, value: number|undefined, initMod: number, weapon?: string, disabled?: boolean }>
+    fullDefense: {
+        isFullDefending: boolean,
+        value: number | undefined;
+        disabled: boolean;
+    }
     // Melee weapon reach modification.
     isMeleeAttack: boolean
     defenseReach: number
@@ -34,6 +40,11 @@ export class PhysicalDefenseTest extends DefenseTest {
 
         data.cover = 0;
         data.activeDefense = '';
+        data.fullDefense = {
+            isFullDefending: !!this.actor?.isFullDefending,
+            fullDefenseValue: this.actor?.getFullDefenseValue()?.value ?? 0,
+            disabled: false,
+        };
         data.activeDefenses = {};
         data.isMeleeAttack = false;
         data.defenseReach = 0;
@@ -68,11 +79,6 @@ export class PhysicalDefenseTest extends DefenseTest {
 
         // Default active defenses.
         this.data.activeDefenses = {
-            full_defense: {
-                label: 'SR5.FullDefense',
-                value: actor.getFullDefenseValue()?.value,
-                initMod: -10,
-            },
             dodge: {
                 label: 'SR5.Dodge',
                 value: actor.findActiveSkill('gymnastics')?.value,
@@ -84,6 +90,8 @@ export class PhysicalDefenseTest extends DefenseTest {
                 initMod: -5,
             }
         };
+
+        this.data.fullDefense.value = actor.getFullDefenseValue()?.value;
 
         // Collect weapon based defense options.
         // NOTE: This would be way better if the current weapon (this.item) would be used.
@@ -97,7 +105,7 @@ export class PhysicalDefenseTest extends DefenseTest {
             };
         });
 
-        // Filter available active defenes by available ini score.
+        // Filter available active defences by available ini score.
         this._filterActiveDefenses();
     }
 
@@ -147,10 +155,18 @@ export class PhysicalDefenseTest extends DefenseTest {
     }
 
     applyPoolActiveDefenseModifier() {
+        let modValue = 0;
+
         const defense = this.data.activeDefenses[this.data.activeDefense] || {label: 'SR5.ActiveDefense', value: 0, init: 0};
 
+        modValue += defense.value ?? 0;
+
+        if(this.data.fullDefense.isFullDefending) {
+            modValue += this.data.fullDefense.value ?? 0;
+        }
+
         // Apply zero modifier also, to sync pool.mod and modifiers.mod
-        PartsList.AddUniquePart(this.data.modifiers.mod, 'SR5.ActiveDefense', defense.value);
+        PartsList.AddUniquePart(this.data.modifiers.mod, 'SR5.ActiveDefense', modValue);
     }
 
     applyPoolMeleeReachModifier() {
@@ -262,29 +278,40 @@ export class PhysicalDefenseTest extends DefenseTest {
      */
     applyIniModFromActiveDefense() {
         if (!this.actor) return;
-        if (!this.data.activeDefense) return;
 
-        const activeDefense = this.data.activeDefenses[this.data.activeDefense];
-        if (!activeDefense) return;
+        let initMod: number = 0;
+        initMod += this.data.activeDefenses[this.data.activeDefense]?.initMod ?? 0;
+
+        // Reduce initiative by 10 full defense
+        if(this.data.fullDefense.isFullDefending && !this.actor.isFullDefending) {
+            initMod += SR5.fullDefenseInitiativeCost;
+        }
 
         // Use DefenseTest general iniMod behaviour.
-        this.data.iniMod = activeDefense.initMod;
+        this.data.iniMod = initMod;
     }
 
     override _prepareResultActionsTemplateData() {
         const actions = super._prepareResultActionsTemplateData();
 
         // Don't add an action if no active defense was selected.
-        if (!this.data.activeDefense) return actions;
+        if (!this.data.iniMod) return actions;
 
-        const activeDefense = this.data.activeDefenses[this.data.activeDefense];
-        if (!activeDefense) return actions;
+        if(this.data.fullDefense.isFullDefending) {
+            //Apply special action that sets `isFullDefending` to true on the actor
+            actions.push({
+                action: 'modifyCombatantInitWithFullDefense',
+                label: 'SR5.Initiative',
+                value: String(this.data.iniMod)
+            });
+        } else {
+            actions.push({
+                action: 'modifyCombatantInit',
+                label: 'SR5.Initiative',
+                value: String(this.data.iniMod)
+            });
+        }
 
-        actions.push({
-            action: 'modifyCombatantInit',
-            label: 'SR5.Initiative',
-            value: String(activeDefense.initMod)
-        });
 
         return actions;
     }
@@ -307,13 +334,15 @@ export class PhysicalDefenseTest extends DefenseTest {
         if (!this.actor) return;
         
         // Don't validate ini costs when costs are to be ignored.
-        const mustHaveRessouces = game.settings.get(SYSTEM_NAME, FLAGS.MustHaveRessourcesOnTest);
-        if (!mustHaveRessouces) return;
+        const mustHaveResources = game.settings.get(SYSTEM_NAME, FLAGS.MustHaveRessourcesOnTest);
+        if (!mustHaveResources) return;
 
-        // TODO: Check ressource setting.
+        // TODO: Check resource setting.
         const iniScore = this.actor.combatInitiativeScore;
         Object.values(this.data.activeDefenses).forEach(mode => 
             mode.disabled = CombatRules.canUseActiveDefense(iniScore, mode.initMod)
         )
+
+        this.data.fullDefense.disabled = CombatRules.canUseActiveDefense(iniScore, SR5.fullDefenseInitiativeCost);
     }
 }
