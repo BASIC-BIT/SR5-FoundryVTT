@@ -15,6 +15,18 @@ export class IllusionSpellParser extends SpellParserBase {
             descriptor = '';
         }
 
+        if(descriptor.includes('Obvious')) {
+            item.system.illusion.type = "obvious";
+        } else if(descriptor.includes('Realistic')) {
+            item.system.illusion.type = "realistic";
+        }
+
+        if(descriptor.includes('Single-Sense')) {
+            item.system.illusion.sense = "single-sense";
+        } else if(descriptor.includes('Multi-Sense')) {
+            item.system.illusion.sense = "multi-sense";
+        }
+
         if (item.system.type === 'mana') {
             item.system.action.opposed.type = 'custom';
             item.system.action.opposed.attribute = 'logic';
